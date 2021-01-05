@@ -1,14 +1,10 @@
 class Node
-  include Comparable
   attr_accessor :data, :left, :right
 
   def initialize(data = nil, left = nil, right = nil)
     @data = data
     @left = left
     @right = right
-  end
-  def <=>(other)
-
   end
 end
 
@@ -41,18 +37,38 @@ class Tree
   end
 
   def insert(value, node = @root)
+    # Base case. Empty tree.
     return Node.new(value) if node.nil?
+
+    # Compare with value at node.
+    # < inserts to the left, >= inserts to the right.
     if value < node.data
+      # If the left child is nil, create node.
+      # Otherwise, call insert on child node.
       node.left.nil? ? node.left = Node.new(value) : insert(value, node.left)
     else
       node.right.nil? ? node.right = Node.new(value) : insert(value, node.right)
     end
   end
 
-  def delete(value, node = root)
+  def delete(value, node = @root)
+    # Base case. Empty tree.
     return node if node.nil?
 
+    # Traverse tree looking for node to delete
+    if value < node.data
+      node.left = delete(value, node.left)
+    elsif value > node.data
+      node.right = delete(value, node.right)
+    else
+      # Node with one/zero children
+      return node.right if node.left.nil?
+      return node.left if node.right.nil?
 
+      #Node with two children
+    end
+
+    node
   end
 end
 
@@ -61,14 +77,8 @@ test_tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 puts test_tree.pretty_print
 
 test_tree.insert(42)
-test_tree.insert(9999)
-test_tree.insert(6767)
-test_tree.insert(19)
-test_tree.insert(6)
-test_tree.insert(8000)
-test_tree.insert(1)
-test_tree.insert(2)
+test_tree.insert(15)
 test_tree.insert(3)
-
+test_tree.insert(8000)
 
 puts test_tree.pretty_print
