@@ -1,10 +1,14 @@
 class Node
+  include Comparable
   attr_accessor :data, :left, :right
 
-  def initialize(data = nil)
+  def initialize(data = nil, left = nil, right = nil)
     @data = data
-    @left = nil
-    @right = nil
+    @left = left
+    @right = right
+  end
+  def <=>(other)
+
   end
 end
 
@@ -12,20 +16,22 @@ class Tree
   attr_accessor :root
 
   def initialize(arr=[])
-    @root = build_tree(arr.sort, 0, arr.length)
+    @root = build_tree(arr.sort, 0, arr.length - 1)
   end
 
-  def build_tree(data=[], start_pointer, end_pointer)
+  def build_tree(arr=[], beginning, ending)
     # Base case.
-    return nil if end_pointer < start_pointer
+    return nil if ending < beginning
 
-    mid = (start_pointer + end_pointer) / 2
-    node = Node.new(data[mid])
+    # Calculate midpoint.
+    mid = (beginning + ending) / 2
 
-    node.left = build_tree(data, start_pointer, mid - 1)
-    node.right = build_tree(data, mid+1, end_pointer)
+    # Build left and right trees.
+    left = build_tree(arr, beginning, mid - 1)
+    right = build_tree(arr, mid + 1, ending)
 
-    node
+    # Connect left and right trees to root node.
+    @root = Node.new(arr[mid], left, right)
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -34,15 +40,8 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 
-  def insert(value, node = root)
-    if node.data.nil?
-      new_node = Node.new(value)
-      return new_node
-    end
-    p value
-    p node.data
-
-
+  def insert(value, node = @root)
+    return Node.new(value) if node.nil?
     if value < node.data
       node.left.nil? ? node.left = Node.new(value) : insert(value, node.left)
     else
@@ -50,7 +49,9 @@ class Tree
     end
   end
 
-  def delete(value)
+  def delete(value, node = root)
+    return node if node.nil?
+
 
   end
 end
@@ -63,6 +64,11 @@ test_tree.insert(42)
 test_tree.insert(9999)
 test_tree.insert(6767)
 test_tree.insert(19)
+test_tree.insert(6)
+test_tree.insert(8000)
+test_tree.insert(1)
+test_tree.insert(2)
+test_tree.insert(3)
 
 
 puts test_tree.pretty_print
