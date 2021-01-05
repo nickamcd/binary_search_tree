@@ -54,21 +54,33 @@ class Tree
   def delete(value, node = @root)
     # Base case. Empty tree.
     return node if node.nil?
-
-    # Traverse tree looking for node to delete
+    puts node.data
+    # Traverse tree looking for node to delete.
     if value < node.data
+      puts node.data
+      puts value
+      puts "going left"
       node.left = delete(value, node.left)
     elsif value > node.data
+      puts node.data
+      puts value
+      puts "going right"
       node.right = delete(value, node.right)
     else
-      # Node with one/zero children
+      puts "deleting #{value}"
+      # Node with one/zero children.
       return node.right if node.left.nil?
       return node.left if node.right.nil?
 
-      #Node with two children
+      # Node with two children.
+      node.data = minimum_value(node.right).data
+      node.right = delete(node.data, node.right)
     end
-
     node
+  end
+
+  def minimum_value(node)
+    node.left until node.left.nil?
   end
 end
 
@@ -80,5 +92,10 @@ test_tree.insert(42)
 test_tree.insert(15)
 test_tree.insert(3)
 test_tree.insert(8000)
+
+puts test_tree.pretty_print
+
+test_tree.delete(67)
+test_tree.delete(5)
 
 puts test_tree.pretty_print
