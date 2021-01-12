@@ -89,12 +89,10 @@ class Tree
   end
 
   def level_order
-    # Create queue to store nodes during traversal.
     queue = []
+    data_arr = []
 
-    # Create array that holds data.
-    level_order_data = []
-
+    # Begin traversal at root.
     queue << @root
     
     until queue.empty?
@@ -102,7 +100,7 @@ class Tree
       node = queue.shift
 
       # Store data.
-      level_order_data << node.data
+      data_arr << node.data
 
       # Queue any children.
       unless node.left.nil?
@@ -113,23 +111,50 @@ class Tree
         queue << node.right
       end
     end
-    level_order_data
+    data_arr
   end
 
   def inorder
-    unless root.nil?
-      inorder(root.left)
-      puts root.data
-      inorder(root.right)
+    stack = []
+    data_arr = []
+
+    # Temporary node for traversal.
+    node = @root
+
+    while !stack.empty? || !node.nil?
+      # Traverse down left subtree as far as possible.
+      until node.nil?
+        stack << node
+        node = node.left
+      end
+
+      node = stack.pop
+      data_arr << node.data
+
+      # Begin traversing right tree if there is one.
+      node = node.right
     end
+    data_arr
   end
 
   def preorder
-    unless root.nil?
-      preorder(root.left)
-      preorder(root.right)
-      puts root.data
+    stack = []
+    data_arr = []
+
+    stack << @root
+    unless stack.empty?
+      node = stack.pop
+      data_arr << node.data
+
+      # Push left and right children if there are any.
+      unless node.left.nil?
+        stack << node.left
+      end
+      unless node.right.nil?
+        stack << node.right
+      end
     end
+    data_arr
   end
 
   def postorder
@@ -155,7 +180,6 @@ test_tree.insert(8000)
 puts test_tree.pretty_print
 
 puts "Deleting 67, 23, 5, then 3:\n\n"
-
 test_tree.delete(67)
 test_tree.delete(23)
 test_tree.delete(5)
@@ -164,11 +188,15 @@ test_tree.delete(3)
 puts test_tree.pretty_print
 
 puts "Testing find on 42, 8, and 15:\n\n"
-
 puts test_tree.find(42).data
 puts test_tree.find(8).data
 puts test_tree.find(15).data
 
 puts "\nLevel Order Traversal:"
-
 p test_tree.level_order
+
+puts "\nInorder Traversal:"
+p test_tree.inorder
+
+puts "\nPreorder Traversal:"
+p test_tree.preorder
