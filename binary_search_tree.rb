@@ -79,14 +79,64 @@ class Tree
 
   def find(value, node = @root)
     # Base case. Root is the desired valued
-    return node if value == node.data
+    return node if value == node.data || node.nil?
 
     if value < node.data
       find(value, node.left)
-    elsif value > node.data
-      find(value, node.right)
     else
-      node
+      find(value, node.right)
+    end
+  end
+
+  def level_order
+    # Create queue to store nodes during traversal.
+    queue = []
+
+    # Create array that holds data.
+    level_order_data = []
+
+    queue << @root
+    
+    until queue.empty?
+      # Remove first node of queue.
+      node = queue.shift
+
+      # Store data.
+      level_order_data << node.data
+
+      # Queue any children.
+      unless node.left.nil?
+        queue << node.left
+      end
+
+      unless node.right.nil?
+        queue << node.right
+      end
+    end
+    level_order_data
+  end
+
+  def inorder
+    unless root.nil?
+      inorder(root.left)
+      puts root.data
+      inorder(root.right)
+    end
+  end
+
+  def preorder
+    unless root.nil?
+      preorder(root.left)
+      preorder(root.right)
+      puts root.data
+    end
+  end
+
+  def postorder
+    unless root.nil?
+      puts root.data
+      postorder(root.left)
+      postorder(root.right)
     end
   end
 end
@@ -95,8 +145,7 @@ test_tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 
 puts test_tree.pretty_print
 
-puts "Inserting 42, 15, 3, then 8000.\n\n"
-
+puts "Inserting 42, 15, 3, then 8000:\n\n"
 
 test_tree.insert(42)
 test_tree.insert(15)
@@ -105,7 +154,7 @@ test_tree.insert(8000)
 
 puts test_tree.pretty_print
 
-puts "Deleting 67, 23, 5, then 3.\n\n"
+puts "Deleting 67, 23, 5, then 3:\n\n"
 
 test_tree.delete(67)
 test_tree.delete(23)
@@ -114,8 +163,12 @@ test_tree.delete(3)
 
 puts test_tree.pretty_print
 
-puts "Testing find on 42, 8, and 15\n\n"
+puts "Testing find on 42, 8, and 15:\n\n"
 
 puts test_tree.find(42).data
 puts test_tree.find(8).data
 puts test_tree.find(15).data
+
+puts "\nLevel Order Traversal:"
+
+p test_tree.level_order
