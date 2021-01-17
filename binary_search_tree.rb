@@ -106,7 +106,6 @@ class Tree
       unless node.left.nil?
         queue << node.left
       end
-
       unless node.right.nil?
         queue << node.right
       end
@@ -115,33 +114,30 @@ class Tree
   end
 
   def inorder(arr = [], node = @root)
-    if node.nil?
-      return arr
-    end
-
+    return arr if node.nil?
     inorder(arr, node.left)
     arr.push(node.data)
     inorder(arr, node.right)
   end
 
   def preorder(arr = [], node = @root)
-    if node.nil?
-      return arr
-    end
-
+    return arr if node.nil?
     arr.push(node.data)
     preorder(arr, node.left)
     preorder(arr, node.right)
   end
 
   def postorder(arr = [], node = @root)
-    if node.nil?
-      return arr
-    end
-
+    return arr if node.nil?
     postorder(arr, node.left)
     postorder(arr, node.right)
     arr.push(node.data)
+  end
+
+  def height(node = @root)
+    # Base case.
+    return -1 if node.nil?
+    return [height(node.left), height(node.right)].max + 1
   end
 end
 
@@ -182,3 +178,8 @@ p test_tree.preorder
 
 puts "\nPostorder Traversal:"
 p test_tree.postorder
+
+puts "\nHeight of the Tree:"
+puts test_tree.height
+puts "\nHeight of Node with value 324:"
+puts test_tree.height(test_tree.find(324))
