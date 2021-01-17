@@ -124,24 +124,14 @@ class Tree
     inorder(arr, node.right)
   end
 
-  def preorder
-    stack = []
-    data_arr = []
-
-    stack << @root
-    unless stack.empty?
-      node = stack.pop
-      data_arr << node.data
-
-      # Push left and right children if there are any.
-      unless node.left.nil?
-        stack << node.left
-      end
-      unless node.right.nil?
-        stack << node.right
-      end
+  def preorder(arr = [], node = @root)
+    if node.nil?
+      return arr
     end
-    data_arr
+
+    arr.push(node.data)
+    preorder(arr, node.left)
+    preorder(arr, node.right)
   end
 
   def postorder
