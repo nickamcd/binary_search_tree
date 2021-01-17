@@ -134,11 +134,14 @@ class Tree
     preorder(arr, node.right)
   end
 
-  def postorder
-    stack = []
-    data_arr = []
+  def postorder(arr = [], node = @root)
+    if node.nil?
+      return arr
+    end
 
-    
+    postorder(arr, node.left)
+    postorder(arr, node.right)
+    arr.push(node.data)
   end
 end
 
@@ -176,3 +179,6 @@ p test_tree.inorder
 
 puts "\nPreorder Traversal:"
 p test_tree.preorder
+
+puts "\nPostorder Traversal:"
+p test_tree.postorder
