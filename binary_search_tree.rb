@@ -114,27 +114,14 @@ class Tree
     data_arr
   end
 
-  def inorder
-    stack = []
-    data_arr = []
-
-    # Temporary node for traversal.
-    node = @root
-
-    while !stack.empty? || !node.nil?
-      # Traverse down left subtree as far as possible.
-      until node.nil?
-        stack << node
-        node = node.left
-      end
-
-      node = stack.pop
-      data_arr << node.data
-
-      # Begin traversing right tree if there is one.
-      node = node.right
+  def inorder(arr = [], node = @root)
+    if node.nil?
+      return arr
     end
-    data_arr
+
+    inorder(arr, node.left)
+    arr.push(node.data)
+    inorder(arr, node.right)
   end
 
   def preorder
@@ -158,11 +145,10 @@ class Tree
   end
 
   def postorder
-    unless root.nil?
-      puts root.data
-      postorder(root.left)
-      postorder(root.right)
-    end
+    stack = []
+    data_arr = []
+
+    
   end
 end
 
