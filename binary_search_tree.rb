@@ -173,60 +173,29 @@ class Tree
   end
 end
 
-test_tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+test_tree = Tree.new(Array.new(15){ rand(1..100) })
 
-puts test_tree.pretty_print
-
-puts "Inserting 42, 15, 3, then 8000:\n\n"
-
-test_tree.insert(42)
-test_tree.insert(15)
-test_tree.insert(3)
-test_tree.insert(8000)
-
-puts test_tree.pretty_print
-
-puts "Deleting 67, 23, 5, then 3:\n\n"
-test_tree.delete(67)
-test_tree.delete(23)
-test_tree.delete(5)
-test_tree.delete(3)
-
-puts test_tree.pretty_print
-
-puts "Testing find on 42, 8, and 15:\n\n"
-puts test_tree.find(42).data
-puts test_tree.find(8).data
-puts test_tree.find(15).data
-
-puts "\nLevel Order Traversal:"
-p test_tree.level_order
-
-puts "\nInorder Traversal:"
-p test_tree.inorder
-
-puts "\nPreorder Traversal:"
-p test_tree.preorder
-
-puts "\nPostorder Traversal:"
-p test_tree.postorder
-
-puts "\nHeight of the Tree:"
-puts test_tree.height
-puts "\nHeight of Node with value 324:"
-puts test_tree.height(test_tree.find(324))
-
-puts "\nDepth of Node with value 8000:"
-puts test_tree.depth(test_tree.find(8000))
-
-puts test_tree.pretty_print
-
+test_tree.pretty_print
 puts "Is the tree balanced? #{test_tree.balanced?}"
 
-puts "Rebalancing tree..."
+puts "Level-Order: #{test_tree.level_order}"
+puts "Preorder: #{test_tree.preorder}"
+puts "Postorder: #{test_tree.postorder}"
+puts "Inorder: #{test_tree.inorder}"
 
+test_tree.insert(101)
+test_tree.insert(500)
+test_tree.insert(999)
+
+test_tree.pretty_print
+puts "Is the tree balanced? #{test_tree.balanced?}"
+
+puts "Rebalancing..."
 test_tree.rebalance
-
-puts test_tree.pretty_print
-
+test_tree.pretty_print
 puts "Is the tree balanced? #{test_tree.balanced?}"
+
+puts "Level-Order: #{test_tree.level_order}"
+puts "Preorder: #{test_tree.preorder}"
+puts "Postorder: #{test_tree.postorder}"
+puts "Inorder: #{test_tree.inorder}"
