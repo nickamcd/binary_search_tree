@@ -153,7 +153,7 @@ class Tree
     # Base case. Already at root.
     return 0 if node == @root
 
-    [depth(node.left), depth(node.right)].max + 1
+    height(root) - height(node)
   end
 end
 
