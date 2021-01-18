@@ -114,21 +114,27 @@ class Tree
   end
 
   def inorder(arr = [], node = @root)
+    # Base case.
     return arr if node.nil?
+
     inorder(arr, node.left)
     arr.push(node.data)
     inorder(arr, node.right)
   end
 
   def preorder(arr = [], node = @root)
+    # Base case.
     return arr if node.nil?
+
     arr.push(node.data)
     preorder(arr, node.left)
     preorder(arr, node.right)
   end
 
   def postorder(arr = [], node = @root)
+    # Base case.
     return arr if node.nil?
+
     postorder(arr, node.left)
     postorder(arr, node.right)
     arr.push(node.data)
@@ -137,7 +143,21 @@ class Tree
   def height(node = @root)
     # Base case.
     return -1 if node.nil?
+
     return [height(node.left), height(node.right)].max + 1
+  end
+
+  def depth(node = @root)
+    # Base case. Node is nil.
+    return -1 if node.nil?
+    # Base case. Already at root.
+    return 0 if node == @root
+
+    if node.data < @root.data
+      return depth(node.left) + 1
+    else
+      return depth(node.right) + 1
+    end
   end
 end
 
@@ -183,3 +203,6 @@ puts "\nHeight of the Tree:"
 puts test_tree.height
 puts "\nHeight of Node with value 324:"
 puts test_tree.height(test_tree.find(324))
+
+puts "\nDepth of Node with value 8000:"
+puts test_tree.depth(test_tree.find(8000))
