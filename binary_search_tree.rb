@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Node
   attr_accessor :data, :left, :right
 
@@ -11,11 +13,11 @@ end
 class Tree
   attr_accessor :root
 
-  def initialize(arr=[])
+  def initialize(arr = [])
     @root = build_tree(arr.sort, 0, arr.length - 1)
   end
 
-  def build_tree(arr=[], beginning, ending)
+  def build_tree(arr = [], beginning, ending)
     # Base case.
     return nil if ending < beginning
 
@@ -54,6 +56,7 @@ class Tree
   def delete(value, node = @root)
     # Base case. Empty tree.
     return node if node.nil?
+
     # Traverse tree looking for node to delete.
     if value < node.data
       node.left = delete(value, node.left)
@@ -94,7 +97,7 @@ class Tree
 
     # Begin traversal at root.
     queue << @root
-    
+
     until queue.empty?
       # Remove first node of queue.
       node = queue.shift
@@ -103,12 +106,8 @@ class Tree
       data_arr << node.data
 
       # Queue any children.
-      unless node.left.nil?
-        queue << node.left
-      end
-      unless node.right.nil?
-        queue << node.right
-      end
+      queue << node.left unless node.left.nil?
+      queue << node.right unless node.right.nil?
     end
     data_arr
   end
@@ -144,7 +143,7 @@ class Tree
     # Base case.
     return -1 if node.nil?
 
-    return [height(node.left), height(node.right)].max + 1
+    [height(node.left), height(node.right)].max + 1
   end
 
   def depth(node = @root)
@@ -164,16 +163,17 @@ class Tree
     right_height = height(node.right)
 
     return true if (left_height - right_height).abs <= 1 && balanced?(node.left) && balanced?(node.right)
-    return false
+
+    false
   end
 
   def rebalance
-    arr = self.level_order
+    arr = level_order
     build_tree(arr.sort, 0, arr.length - 1)
   end
 end
 
-test_tree = Tree.new(Array.new(15){ rand(1..100) })
+test_tree = Tree.new(Array.new(15) { rand(1..100) })
 
 test_tree.pretty_print
 puts "Is the tree balanced? #{test_tree.balanced?}"
@@ -190,7 +190,7 @@ test_tree.insert(999)
 test_tree.pretty_print
 puts "Is the tree balanced? #{test_tree.balanced?}"
 
-puts "Rebalancing..."
+puts 'Rebalancing...'
 test_tree.rebalance
 test_tree.pretty_print
 puts "Is the tree balanced? #{test_tree.balanced?}"
