@@ -155,6 +155,22 @@ class Tree
 
     height(root) - height(node)
   end
+
+  def balanced?(node = @root)
+    # Base case. Empty tree.
+    return true if node.nil?
+
+    left_height = height(node.left)
+    right_height = height(node.right)
+
+    return true if (left_height - right_height).abs <= 1 && balanced?(node.left) && balanced?(node.right)
+    return false
+  end
+
+  def rebalance
+    arr = self.level_order
+    build_tree(arr.sort, 0, arr.length - 1)
+  end
 end
 
 test_tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
@@ -202,3 +218,15 @@ puts test_tree.height(test_tree.find(324))
 
 puts "\nDepth of Node with value 8000:"
 puts test_tree.depth(test_tree.find(8000))
+
+puts test_tree.pretty_print
+
+puts "Is the tree balanced? #{test_tree.balanced?}"
+
+puts "Rebalancing tree..."
+
+test_tree.rebalance
+
+puts test_tree.pretty_print
+
+puts "Is the tree balanced? #{test_tree.balanced?}"
